@@ -91,6 +91,7 @@ const react_to_user_clicks = function(div_element, image_location) {
                     black_boxes[i].classList.remove("black-box");
                 }
             }
+            number_of_clicks = 0;
         } else {
             first_image_selection = "";
             second_image_selection = "";
@@ -99,10 +100,11 @@ const react_to_user_clicks = function(div_element, image_location) {
                     black_boxes[i].classList.remove("first-selected");
                 }
             }
+            setTimeout(function() {
+                remove_images_from_all_black_boxes();
+                number_of_clicks = 0;
+            }, 1500)
         }
-    } else {
-        remove_images_from_all_black_boxes();
-        number_of_clicks = 0;
     }
 }
 
