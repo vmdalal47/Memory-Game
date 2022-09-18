@@ -49,8 +49,9 @@ let number_of_clicks = 0;
 let black_boxes = document.querySelectorAll(".black-box");
 
 const remove_image_from_black_box = function(div_element) {
-    if (div_element.hasChildNodes() && !div_element.classList.contains("matched-box")) {
-        div_element.removeChild(div_element.lastChild);
+    if (!div_element.classList.contains("matched-box")) {
+        div_element.style.backgroundColor = "black";
+        div_element.style.removeProperty("background-image");
     }
 }
 
@@ -61,11 +62,10 @@ const remove_images_from_all_black_boxes = function() {
     }
 }
 
-const append_image_to_black_box = function(div_element, image_location) {
-    let image = document.createElement("img");
-    image.src = image_location;
-    image.classList = "picture";
-    div_element.appendChild(image);
+const add_image_to_black_box = function(div_element, image_location) {
+    div_element.style.removeProperty("background-color");
+    div_element.style.backgroundImage = "url(" + image_location + ")";
+    div_element.style.backgroundSize = "100% 100%";
 }
 
 let first_image_selection;
@@ -74,13 +74,13 @@ let second_image_selection;
 const react_to_user_clicks = function(div_element, image_location) {
     if (number_of_clicks === 0) {
         remove_image_from_black_box(div_element);
-        append_image_to_black_box(div_element, image_location);
+        add_image_to_black_box(div_element, image_location);
         number_of_clicks++;
         first_image_selection = image_location;
         div_element.classList.add("first-selected");
     } else if (number_of_clicks === 1) {
         remove_image_from_black_box(div_element);
-        append_image_to_black_box(div_element, image_location);
+        add_image_to_black_box(div_element, image_location);
         number_of_clicks++;
         second_image_selection = image_location;
         if (first_image_selection === second_image_selection && !div_element.classList.contains("first-selected")) {
