@@ -1,11 +1,11 @@
 const image_locations = [
-    "memory_game_images/christopher_waller.jpeg",
-    "memory_game_images/jerome_powell.jpeg",
-    "memory_game_images/lael_brainard.jpeg",
-    "memory_game_images/lisa_cook.jpeg",
-    "memory_game_images/michael_barr.jpeg",
-    "memory_game_images/michelle_bowman.jpeg",
-    "memory_game_images/philip_jefferson.jpeg"
+    "memory_game_images/christopher_waller.jpg",
+    "memory_game_images/jerome_powell.jpg",
+    "memory_game_images/lael_brainard.jpg",
+    "memory_game_images/lisa_cook.jpg",
+    "memory_game_images/michael_barr.jpg",
+    "memory_game_images/michelle_bowman.jpg",
+    "memory_game_images/philip_jefferson.jpg"
 ]
 
 const image_container = document.getElementById("image-container");
@@ -27,3 +27,92 @@ populate_row_of_empty_boxes("row_one");
 
 populate_row_of_empty_boxes("row_two");
 
+const image_locations_2x = [];
+
+for (let i = 0; i < image_locations.length * 2; i++) {
+    image_locations_2x[i] = image_locations[Math.floor(i / 2)]
+}
+
+const image_locations_2x_random_order = [];
+
+let index_of_new_array = 0;
+
+while (image_locations_2x.length != 0) {
+    let random_number_for_index_of_original_array = Math.floor(Math.random() * image_locations_2x.length);
+    image_locations_2x_random_order[index_of_new_array] = image_locations_2x[random_number_for_index_of_original_array];
+    image_locations_2x.splice(random_number_for_index_of_original_array, 1);
+    index_of_new_array++;
+}
+
+let number_of_clicks = 0;
+
+let black_boxes = document.querySelectorAll(".black-box");
+
+const remove_image_from_black_box = function(div_element) {
+    if (div_element.hasChildNodes() && !div_element.classList.contains("matched-box")) {
+        div_element.removeChild(div_element.lastChild);
+    }
+}
+
+const remove_images_from_all_black_boxes = function() {
+    for (let i = 0; i < black_boxes.length; i++) {
+        let black_box = black_boxes[i];
+        remove_image_from_black_box(black_box);
+    }
+}
+
+const append_image_to_black_box = function(div_element, image_location) {
+    let image = document.createElement("img");
+    image.src = image_location;
+    image.classList = "picture";
+    div_element.appendChild(image);
+}
+
+let first_image_selection;
+let second_image_selection;
+
+const react_to_user_clicks = function(div_element, image_location) {
+    if (number_of_clicks === 0) {
+        remove_image_from_black_box(div_element);
+        append_image_to_black_box(div_element, image_location);
+        number_of_clicks++;
+        first_image_selection = image_location;
+        div_element.classList.add("first-selected");
+    } else if (number_of_clicks === 1) {
+        remove_image_from_black_box(div_element);
+        append_image_to_black_box(div_element, image_location);
+        number_of_clicks++;
+        second_image_selection = image_location;
+        if (first_image_selection === second_image_selection && !div_element.classList.contains("first-selected")) {
+            div_element.classList.add("matched-box");
+            div_element.classList.remove("black-box");
+            for (let i = 0; i < black_boxes.length; i++) {
+                if (black_boxes[i].classList.contains("first-selected")) {
+                    black_boxes[i].classList.add("matched-box");
+                    black_boxes[i].classList.remove("first-selected");
+                    black_boxes[i].classList.remove("black-box");
+                }
+            }
+        } else {
+            first_image_selection = "";
+            second_image_selection = "";
+            for (let i = 0; i < black_boxes.length; i++) {
+                if (black_boxes[i].classList.contains("first-selected")) {
+                    black_boxes[i].classList.remove("first-selected");
+                }
+            }
+        }
+    } else {
+        remove_images_from_all_black_boxes();
+        number_of_clicks = 0;
+    }
+}
+
+for (let i = 0; i < black_boxes.length; i++) {
+    let black_box = black_boxes[i];
+    black_box.addEventListener("click", function() {
+        react_to_user_clicks(this, image_locations_2x_random_order[i]);
+    });
+}
+
+console.log(image_locations_2x_random_order);

@@ -1,7 +1,10 @@
 .black-box {
+    background-color: black;
+}
+
+.matched-box, .black-box {
     width: 5rem;
     height: 6rem;
-    background-color: black;
     margin: 1rem;
     display: inline-flex;
 }
