@@ -73,13 +73,11 @@ let second_image_selection;
 
 const react_to_user_clicks = function(div_element, image_location) {
     if (number_of_clicks === 0) {
-        remove_image_from_black_box(div_element);
         add_image_to_black_box(div_element, image_location);
         number_of_clicks++;
         first_image_selection = image_location;
         div_element.classList.add("first-selected");
     } else if (number_of_clicks === 1) {
-        remove_image_from_black_box(div_element);
         add_image_to_black_box(div_element, image_location);
         number_of_clicks++;
         second_image_selection = image_location;
