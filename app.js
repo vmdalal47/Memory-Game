@@ -77,7 +77,7 @@ const react_to_user_clicks = function(div_element, image_location) {
         number_of_clicks++;
         first_image_selection = image_location;
         div_element.classList.add("first-selected");
-    } else if (number_of_clicks === 1) {
+    } else if (number_of_clicks === 1 && !div_element.classList.contains("first-selected")) {
         add_image_to_black_box(div_element, image_location);
         number_of_clicks++;
         second_image_selection = image_location;
