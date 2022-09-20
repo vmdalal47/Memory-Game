@@ -8,6 +8,8 @@ const image_locations = [
     "memory_game_images/philip_jefferson.jpg"
 ]
 
+const submit_button = document.querySelector("input[type='submit']");
+
 const image_container = document.getElementById("image-container");
 const number_of_images = image_locations.length;
 
