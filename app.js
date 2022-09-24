@@ -8,10 +8,22 @@ const image_locations = [
     "memory_game_images/philip_jefferson.jpg"
 ]
 
+const image_names = [
+    "Christopher Waller",
+    "Jerome Powell",
+    "Lael Brainard",
+    "Lisa Cook",
+    "Michael Barr",
+    "Michelle Bowman",
+    "Philip Jefferson"
+]
+
 const submit_button = document.querySelector("input[type='submit']");
 
 const image_container = document.getElementById("image-container");
 const number_of_images = image_locations.length;
+
+const progress_container = document.getElementById("progress-container");
 
 const populate_row_of_empty_boxes = function(row_number_class) {
     let row_container = document.createElement("div");
@@ -29,20 +41,49 @@ populate_row_of_empty_boxes("row_one");
 
 populate_row_of_empty_boxes("row_two");
 
+for (let i = 0; i < image_locations.length; i++) {
+    let nth_image_location_container = document.createElement("div");
+    nth_image_location_container.classList = "progress-image-container";
+    
+    let progress_image_label = document.createElement("p");
+    progress_image_label.classList = "progress-image-label " + image_names[i].replace(" ", "-");
+    progress_image_label.innerHTML = image_names[i];
+
+    let progress_image = document.createElement("img");
+    progress_image.classList = "progress-image";
+    progress_image.src = image_locations[i];
+
+    nth_image_location_container.appendChild(progress_image_label);
+    nth_image_location_container.appendChild(progress_image);
+
+    progress_container.appendChild(nth_image_location_container);
+}
+
+const progress_images = document.querySelectorAll(".progress-image");
+
+const progress_image_labels = document.querySelectorAll(".progress-image-label");
+
 const image_locations_2x = [];
 
+const image_names_2x = [];
+
 for (let i = 0; i < image_locations.length * 2; i++) {
-    image_locations_2x[i] = image_locations[Math.floor(i / 2)]
+    image_locations_2x[i] = image_locations[Math.floor(i / 2)];
+    image_names_2x[i] = image_names[Math.floor(i / 2)];
 }
 
 const image_locations_2x_random_order = [];
+
+const image_names_2x_random_order = [];
 
 let index_of_new_array = 0;
 
 while (image_locations_2x.length != 0) {
     let random_number_for_index_of_original_array = Math.floor(Math.random() * image_locations_2x.length);
     image_locations_2x_random_order[index_of_new_array] = image_locations_2x[random_number_for_index_of_original_array];
+    image_names_2x_random_order[index_of_new_array] = image_names_2x[random_number_for_index_of_original_array];
     image_locations_2x.splice(random_number_for_index_of_original_array, 1);
+    image_names_2x.splice(random_number_for_index_of_original_array, 1);
     index_of_new_array++;
 }
 
@@ -73,7 +114,15 @@ const add_image_to_black_box = function(div_element, image_location) {
 let first_image_selection;
 let second_image_selection;
 
-const react_to_user_clicks = function(div_element, image_location) {
+const indicate_matched_image_in_progress_section = function(image_name) {
+    for (let i = 0; i < progress_image_labels.length; i++) {
+        if (progress_image_labels[i].classList.contains(image_name.replace(" ", "-"))) {
+            progress_image_labels[i].innerHTML = "You matched " + image_names[i] + "!";
+        }
+    }
+}
+
+const react_to_user_clicks = function(div_element, image_location, image_name) {
     if (number_of_clicks === 0) {
         add_image_to_black_box(div_element, image_location);
         number_of_clicks++;
@@ -93,6 +142,7 @@ const react_to_user_clicks = function(div_element, image_location) {
                     black_boxes[i].classList.remove("black-box");
                 }
             }
+            indicate_matched_image_in_progress_section(image_name);
             number_of_clicks = 0;
         } else {
             first_image_selection = "";
@@ -113,7 +163,7 @@ const react_to_user_clicks = function(div_element, image_location) {
 for (let i = 0; i < black_boxes.length; i++) {
     let black_box = black_boxes[i];
     black_box.addEventListener("click", function() {
-        react_to_user_clicks(this, image_locations_2x_random_order[i]);
+        react_to_user_clicks(this, image_locations_2x_random_order[i], image_names_2x_random_order[i]);
     });
 }
 
