@@ -25,6 +25,12 @@ const number_of_images = image_locations.length;
 
 const progress_container = document.getElementById("progress-container");
 
+const number_of_matches_container = document.getElementById("number-of-matches-container");
+
+let number_of_matches = 0;
+
+let number_of_matches_message = document.getElementById("number-of-matches-message");
+
 const populate_row_of_empty_boxes = function(row_number_class) {
     let row_container = document.createElement("div");
     
@@ -122,6 +128,11 @@ const indicate_matched_image_in_progress_section = function(image_name) {
     }
 }
 
+const update_number_of_matches_message = function() {
+    number_of_matches++;
+    number_of_matches_message.innerHTML = "You made " + number_of_matches + " matches!";
+}
+
 const react_to_user_clicks = function(div_element, image_location, image_name) {
     if (number_of_clicks === 0) {
         add_image_to_black_box(div_element, image_location);
@@ -140,6 +151,7 @@ const react_to_user_clicks = function(div_element, image_location, image_name) {
                     black_boxes[i].classList.add("matched-box");
                     black_boxes[i].classList.remove("first-selected");
                     black_boxes[i].classList.remove("black-box");
+                    update_number_of_matches_message();
                 }
             }
             indicate_matched_image_in_progress_section(image_name);
